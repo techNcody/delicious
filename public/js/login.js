@@ -22,7 +22,7 @@ const login = async (otp) => {
   try {
     const result = await axios({
       method: 'POST',
-      url: `${location.protocol}://${location.hostname}/api/v2/users/login`,
+      url: 'https://dellicious.herokuapp.com//api/v2/users/login',
       data: {
         otp
       }
@@ -63,12 +63,12 @@ async function getOtpFn(email) {
   try {
     const result = await axios({
       method: 'POST',
-      url: `${location.protocol}://${location.hostname}/api/v2/users/login`,
+      url: 'https://dellicious.herokuapp.com/api/v2/users/sendOtp',
       data: {
         email
       }
     });
-    showAlert('An OTP has been sent to your registered email id', 2000);
+    alert('An OTP has been sent to your registered email id');
     console.log(result.data.data);
     getOtpForm.classList.add('dl-hide-el');
     verifyOtpForm.classList.remove('dl-hide-el');
