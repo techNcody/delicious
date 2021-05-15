@@ -4,7 +4,7 @@
   "description": "Online home made food delivery platform",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "author": "Abhijit Biswas",
   "license": "ISC",
