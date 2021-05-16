@@ -77,7 +77,7 @@ const login = async (otp) => {
       // }, 3000);
     }
   } catch (err) {
-    showAlert('Incorrect email or password!!', 1500);
+    alert('Invalid OTP!!');
     console.log(err);
     // window.setTimeout(() => {
     //   location.assign('/login.html');
