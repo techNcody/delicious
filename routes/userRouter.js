@@ -24,12 +24,10 @@ router.route('/:id').post(
   userController.getUser
 );
 
-router
-  .route('/')
-  .get(
-    authController.protect,
-    authController.restrictTo('admin'),
-    userController.getUsers
-  );
+router.route('/').get(
+  // authController.protect,
+  // authController.restrictTo('admin'),
+  userController.getUsers
+);
 
 module.exports = router;
