@@ -1,5 +1,5 @@
 const { promisify } = require('util');
-const bcrypt = require('bcryptjs');
+// const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const localStorage = require('localStorage');
 const nodemailer = require('nodemailer');
