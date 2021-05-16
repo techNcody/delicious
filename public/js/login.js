@@ -1,5 +1,5 @@
 const loginBtn = document.getElementById('login-btn');
-const logoutBtn = document.getElementById('logout-btn');
+const logoutBtn = document.querySelector('.logout-btn');
 const emailInput = document.getElementById('email');
 const otpInput = document.getElementById('otp');
 const getOtp = document.getElementById('get-otp');
@@ -34,7 +34,7 @@ const login = async (otp) => {
 
     if (result.data.data.status === 'success') {
       window.setTimeout(() => {
-        location.assign('/home.html');
+        location.assign('/home');
       }, 3000);
     } else {
       document.getElementById('login-loader').classList.add('dl-hide-el');
@@ -87,6 +87,24 @@ function showAlert(msg, duration) {
   }, duration);
   document.body.appendChild(el);
 }
+
+// const logout = async () => {
+//   const res = await axios('/api/v2/users/logout');
+//   console.log(res);
+//   console.log('Hello from the logout');
+//   // if (res.status == 'success') {
+//   //   location.assign('/index.html');
+//   // }
+// };
+
+// if (logoutBtn) {
+//   logoutBtn.addEventListener('click', () => {
+//     location.assign('/index.html');
+//     console.log('logout clicked');
+//     logout();
+//     // location.assign('/index.html');
+//   });
+// }
 
 // $.ajax({
 //   url: '/api/v2/users/sendOtp',

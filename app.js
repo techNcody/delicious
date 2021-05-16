@@ -5,13 +5,14 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 const userRouter = require('./routes/userRouter');
+const viewRouter = require('./routes/viewRouter');
 
 app.use(cors());
 
 // To make express understand which one is the static folder loction
 
-// app.set('view engine', 'pug');
-// app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -44,6 +45,9 @@ app.use(function (req, res, next) {
   next();
 });
 
+// app.use(compression());
+
+app.use('/', viewRouter);
 app.use('/api/v2/users', userRouter);
 
 module.exports = app;

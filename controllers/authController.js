@@ -9,8 +9,8 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
 const sendMail = function (toAddress, text) {
-  console.log(process.env.NODEMAILER_USERNAME);
-  console.log(process.env.NODEMAILER_PASSWORD);
+  // console.log(process.env.NODEMAILER_USERNAME);
+  // console.log(process.env.NODEMAILER_PASSWORD);
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -98,13 +98,11 @@ exports.sendOtp = async (req, res, next) => {
 exports.login = catchAsync(async (req, res, next) => {
   try {
     const { otp } = req.body;
-    console.log(otp);
-    console.log(typeof otp);
 
     if (!otp) return next(new AppError('Please provide a valid OTP', 400));
 
     const user = await User.findOne({ otp });
-    console.log(user);
+    // console.log(user);
     req.user = user;
 
     if (!user) {
@@ -192,15 +190,19 @@ exports.protect = catchAsync(async (req, res, next) => {
     );
 
   req.user = currentUser;
-  if (currentUser) {
-    res.status(200).json({
-      status: 'success'
-    });
-  } else {
-    res.status(404).json({
-      status: 'error'
-    });
-  }
+  // console.log(token);
+  // console.log(currentUser);
+  // console.log('Hello from the auth');
+  // if (currentUser) {
+  //   res.status(200).json({
+  //     status: 'successss'
+  //   });
+  // } else {
+  //   res.status(404).json({
+  //     status: 'error'
+  //   });
+  // }
+  next();
 });
 
 exports.isLoggedIn = catchAsync(async (req, res, next) => {
@@ -245,7 +247,7 @@ exports.logout = async (req, res, next) => {
 
   localStorage.removeItem('userName');
 
-  res.status(200).json({
-    status: 'success'
+  res.status(200).render('login', {
+    title: 'feellikehome | Login'
   });
 };
