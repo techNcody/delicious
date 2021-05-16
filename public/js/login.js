@@ -21,14 +21,14 @@ if (verifyOtpForm) {
 const login = async (otp) => {
   try {
     $.ajax({
-      url: 'https://lit-ocean-10713.herokuapp.com/api/v2/users/login',
+      url: '/api/v2/users/login',
       dataType: 'json',
       type: 'Post',
       async: true,
       data: { otp },
       success: function (data) {
         console.log(data);
-        if (data.data.data.status === 'success') {
+        if (data.data.status === 'success') {
           window.setTimeout(() => {
             location.assign('/home.html');
           }, 3000);
@@ -97,7 +97,7 @@ if (getOtpForm) {
 async function getOtpFn(email) {
   try {
     $.ajax({
-      url: 'https://lit-ocean-10713.herokuapp.com/api/v2/users/sendOtp',
+      url: '/api/v2/users/sendOtp',
       dataType: 'json',
       type: 'Post',
       async: true,
@@ -112,6 +112,7 @@ async function getOtpFn(email) {
         var msg = '';
         if (xhr.status === 0) {
           msg = 'Not connect.\n Verify Network.';
+          console.log(xhr.responseText);
         } else if (xhr.status == 404) {
           msg = 'Requested page not found. [404]';
         } else if (xhr.status == 500) {
