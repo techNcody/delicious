@@ -22,7 +22,7 @@ const login = async (otp) => {
   try {
     const result = await axios({
       method: 'POST',
-      url: 'https://dellicious.herokuapp.com/api/v2/users/login',
+      url: '/api/v2/users/login',
       data: {
         otp
       }
@@ -63,7 +63,7 @@ async function getOtpFn(email) {
   try {
     const result = await axios({
       method: 'POST',
-      url: 'https://dellicious.herokuapp.com/api/v2/users/sendOtp',
+      url: '/api/v2/users/sendOtp',
       data: {
         email
       }
