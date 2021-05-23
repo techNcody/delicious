@@ -4,7 +4,12 @@ const router = express.Router();
 const viewController = require('./../controllers/viewController');
 const authController = require('../controllers/authController');
 
-router.get('/', viewController.getLogin);
-router.get('/home', authController.protect, viewController.getHomePage);
+router.get('/', authController.isLoggedIn, viewController.getHomePage);
+router.get('/login', authController.isLoggedIn, viewController.getLogin);
+router.get(
+  '/subscription',
+  authController.protect,
+  viewController.getSubscription
+);
 
 module.exports = router;

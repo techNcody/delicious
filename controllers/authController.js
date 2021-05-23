@@ -1,14 +1,42 @@
 const { promisify } = require('util');
+const pug = require('pug');
+const path = require('path');
 // const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const localStorage = require('localStorage');
 const nodemailer = require('nodemailer');
+const Email = require('email-templates');
 
 const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
-const sendMail = function (toAddress, text) {
+const sendMailHTML = function (toAddress, subject, html) {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.NODEMAILER_USERNAME,
+      pass: process.env.NODEMAILER_PASSWORD
+    }
+  });
+
+  const mailOptions = {
+    from: process.env.NODEMAILER_USERNAME,
+    to: toAddress,
+    subject,
+    html
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+};
+
+const sendMail = function (toAddress, subject, text) {
   // console.log(process.env.NODEMAILER_USERNAME);
   // console.log(process.env.NODEMAILER_PASSWORD);
   const transporter = nodemailer.createTransport({
@@ -22,7 +50,7 @@ const sendMail = function (toAddress, text) {
   const mailOptions = {
     from: process.env.NODEMAILER_USERNAME,
     to: toAddress,
-    subject: 'Login OTP',
+    subject,
     text
   };
 
@@ -86,7 +114,8 @@ exports.sendOtp = async (req, res, next) => {
 
   // 2) Send OTP through SMS / email
   const text = `Hi ${user.name}, ${otp} is your OTP for logging in to delicious Platform. This OTP will be valid only for the next 10 minutes.`;
-  sendMail(user.email, text);
+  const subject = 'Login OTP';
+  sendMail(user.email, subject, text);
   res.status(200).json({
     data: {
       status: 'success',
@@ -239,7 +268,7 @@ exports.restrictTo = (...roles) => {
   };
 };
 
-exports.logout = async (req, res, next) => {
+exports.logout = catchAsync(async (req, res, next) => {
   res.cookie('jwt', 'Logged out', {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true
@@ -247,7 +276,41 @@ exports.logout = async (req, res, next) => {
 
   localStorage.removeItem('userName');
 
-  res.status(200).render('login', {
-    title: 'feellikehome | Login'
+  res.status(200).render('home', {
+    title: 'feellikehome | Home'
+  });
+});
+
+exports.sendMessage = (req, res, next) => {
+  console.log(req.body);
+
+  const toAddress = 'contact.speksolutions@gmail.com';
+  const subject = `New message from ${req.body.name.split(' ')[0]} (${
+    req.body.email
+  })`;
+
+  const html = pug.renderFile(`${__dirname}/../views/emailTemplate.pug`, {
+    name: req.body.name,
+    email: req.body.email,
+    phone: req.body.phone,
+    message: req.body.message,
+    subject
+  });
+
+  sendMailHTML(toAddress, subject, html);
+  res.status(200).json({
+    status: 'success'
   });
 };
+
+// $('.php-email-form').find('.sent-message').slideDown();
+// S.fn.init [div.sent-message, prevObject: S.fn.init(1)]
+// $('.php-email-form').find('.sent-message').slideUp();
+// S.fn.init [div.sent-message, prevObject: S.fn.init(1)]
+// maps.google.com/maps/gen_204?target=api&ev=api_snap&cad=host:www.google.com,v:44,r:100,client:google-maps-embed,t:9-515037,Mm-p:1-if,Mm-h:1-if,Ox-p:1-if,Ox-h:1-if,Rs-p:1-if,Rs-h:1-if,src:apiv3,token:82o4rrmdzl,ts:1969j6:1 GET https://maps.google.com/maps/gen_204?target=api&ev=api_snap&cad=host:www.google.com,v:44,r:100,client:google-maps-embed,t:9-515037,Mm-p:1-if,Mm-h:1-if,Ox-p:1-if,Ox-h:1-if,Rs-p:1-if,Rs-h:1-if,src:apiv3,token:82o4rrmdzl,ts:1969j6 net::ERR_NAME_NOT_RESOLVED
+// Image (async)
+// eY.Rf @ stats.js:4
+// Bja @ stats.js:3
+// (anonymous) @ stats.js:3
+// $('.php-email-form').find('.loading').slideUp();
+// S.fn.init [div.loading, prevObject: S.fn.init(1)]

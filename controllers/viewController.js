@@ -5,7 +5,10 @@
 const User = require('../models/userModel');
 
 exports.getHomePage = (req, res, next) => {
-  const userName = req.user.name;
+  let userName = null;
+  if (req.user) {
+    userName = req.user.name;
+  }
   res.status(200).render('home', {
     title: 'feellikehome | Home',
     userName
@@ -13,7 +16,22 @@ exports.getHomePage = (req, res, next) => {
 };
 
 exports.getLogin = (req, res, next) => {
-  res.status(200).render('login', {
-    title: 'feellikehome | Login'
+  let userName = null;
+  if (req.user) {
+    userName = req.user.name;
+    res.status(200).render('home', {
+      title: 'feellikehome | Home',
+      userName
+    });
+  } else {
+    res.status(200).render('login', {
+      title: 'feellikehome | Login'
+    });
+  }
+};
+
+exports.getSubscription = (req, res, next) => {
+  res.status(200).render('subscription', {
+    title: 'feellikehome | subscription'
   });
 };

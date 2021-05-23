@@ -34,7 +34,7 @@ const login = async (otp) => {
 
     if (result.data.data.status === 'success') {
       window.setTimeout(() => {
-        location.assign('/home');
+        location.assign('/');
       }, 3000);
     } else {
       document.getElementById('login-loader').classList.add('dl-hide-el');
