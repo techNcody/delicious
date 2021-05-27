@@ -21,6 +21,13 @@ head
   link(href='assets/css/style.css' rel='stylesheet')
   //
 
+  //for bootstrap
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css')
+  script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js')
+  script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')
+
 // ======= Top Bar =======
 section#topbar.d-none.d-lg-flex.align-items-center.fixed-top.topbar-transparent
   .container.text-right
@@ -47,7 +54,7 @@ header#header.fixed-top.d-flex.align-items-center.header-transparent
         li
           a(href='#menu') Menu
         li
-          a(href='#specials') Subscription
+          a(href='#subscription') Subscription
         // <li><a href="#events">Profile</a></li>
         //
           <li><a href="#chefs">Chefs</a></li>
@@ -61,10 +68,10 @@ header#header.fixed-top.d-flex.align-items-center.header-transparent
             a(href='/subscription') Subscribe a Meal
         else
           li.book-a-table.text-center
-            a(href='/login') Login to Subscribe a Meal
+            a(href='/login') Login
         if userName
           li.book-a-table.text-center
-            a(href='/api/v2/users/logout').logout-btn Logout
+            a(href='').logout-btn Logout
         //- else
         //-   li.book-a-table.text-center
         //-     a(href='/login').login-btn Login
@@ -143,7 +150,7 @@ main#main
             //-   | culpa qui officia deserunt mollit anim id est laborum
   // End About Section
   // ======= Whu Us Section =======
-  section#why-us.why-us
+  section#subscription.subscription
     .container
       .section-title
         h2
@@ -152,13 +159,19 @@ main#main
         //- p
         //-   | Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.
       .row
-        .col-lg-4
-          .box
-            span Lunch
-            h4 24/05 to 23/06
-            p
-              | Paid amount: 
-              | Rs. 2100
+        .card(style='width: 18rem;')
+          .card-body
+            h3.card-title Lunch subscription
+            p.card-text Veg Meal
+            p.card-text Rs.1800
+            a.btn.btn-primary#rzp-button(type='button') Pay now
+        //- .col-lg-4
+        //-   .box
+        //-     span Lunch
+        //-     h4 24/05 to 23/06
+        //-     p
+        //-       | Paid amount: 
+        //-       | Rs. 2100
         //- .col-lg-4.mt-4.mt-lg-0
         //-   .box
         //-     span 02
@@ -190,15 +203,30 @@ main#main
         .col-lg-6.menu-item.filter-starters
           .menu-content
             a(href='#') Veg Meal
-            span Rs. 60 per meal
+            span Rs. 1800 per month
           .menu-ingredients
             | Roti, Rice, Dal, Sabji, Fry, Papad
         .col-lg-6.menu-item.filter-specialty
           .menu-content
             a(href='#') Non-Veg Meal
-            span Rs. 75 per meal
+            span Rs. 2250 per month
           .menu-ingredients
             | Roti, Rice, Chicken/Egg, Dal, Salad
+      .row.menu-container
+        .col-lg-4
+        .col-lg-4(style='margin: 5%')
+          nav.nav-menu.d-none.d-lg-block
+            ul
+              if userName
+                li.book-a-table.text-center
+                  a(href='/subscription') Subscribe a Meal
+              else
+                li.book-a-table.text-center
+                  a(href='/login') Login to Subscribe
+              if userName
+                li.book-a-table.text-center
+                  a(href='').logout-btn Logout
+      
         //- .col-lg-6.menu-item.filter-starters
         //-   .menu-content
         //-     a(href='#') Crab Cake
@@ -328,13 +356,13 @@ main#main
       form.send-message-form(action='/api/v2/users/sendMessage' method='post' role='form')
         .form-row
           .col-md-4.form-group
-            input#name.form-control(type='text' name='name' placeholder='Please enter your full name..' required)
+            input#name.form-control(type='text' name='name' placeholder='Your full name..' required)
             .validate
           .col-md-4.form-group
-            input#email.form-control(type='email' name='email' placeholder='Please enter your email address..' required)
+            input#email.form-control(type='email' name='email' placeholder='Your email address..' required)
             .validate
           .col-md-4.form-group
-            input#phone.form-control(type="tel" name="phone" placeholder="Please enter your mobile number.." pattern="[0-9]{10}" required)
+            input#phone.form-control(type="tel" name="phone" placeholder="Your mobile number.." pattern="[0-9]{10}" required)
             .validate
         //- .form-group
         .form-group
@@ -393,3 +421,5 @@ script(src='assets/js/main.js')
 script(src='https://unpkg.com/axios/dist/axios.min.js')
 script(src='js/login.js')
 script(src='js/email.js')
+script(src='https://checkout.razorpay.com/v1/checkout.js')
+script(src='js/razorPay.js')

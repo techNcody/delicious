@@ -8,6 +8,8 @@ const getOtpForm = document.querySelector('.getOtp-form');
 const verifyOtpForm = document.querySelector('.verifyOtp-form');
 const loggedInUser = document.querySelector('.loggedIn-user');
 
+let userState = '';
+
 if (verifyOtpForm) {
   verifyOtpForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -15,11 +17,11 @@ if (verifyOtpForm) {
     if (!otp) {
       return alert('Please enter you OTP');
     }
-    login(otp);
+    login(otp, userState);
   });
 }
 
-const login = async (otp) => {
+const login = async (otp, userState) => {
   try {
     document.getElementById('login-loader').classList.remove('dl-hide-el');
     verifyOtp.disabled = true;
@@ -28,7 +30,8 @@ const login = async (otp) => {
       method: 'POST',
       url: '/api/v2/users/login',
       data: {
-        otp
+        otp,
+        userState
       }
     });
 
@@ -53,6 +56,7 @@ if (getOtpForm) {
   getOtpForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const email = emailInput.value;
+    userState = email;
     getOtpFn(email);
   });
 }
@@ -88,23 +92,27 @@ function showAlert(msg, duration) {
   document.body.appendChild(el);
 }
 
-// const logout = async () => {
-//   const res = await axios('/api/v2/users/logout');
-//   console.log(res);
-//   console.log('Hello from the logout');
-//   // if (res.status == 'success') {
-//   //   location.assign('/index.html');
-//   // }
-// };
+const logout = async () => {
+  const res = await axios('/api/v2/users/logout');
+  console.log(res);
+  console.log('Hello from the logout');
+  if (res.status === 'success') {
+    location.assign('/');
+  } else {
+    alert('Server error, please try again.');
+    location.reload();
+  }
+  // if (res.status == 'success') {
+  //   location.assign('/index.html');
+  // }
+};
 
-// if (logoutBtn) {
-//   logoutBtn.addEventListener('click', () => {
-//     location.assign('/index.html');
-//     console.log('logout clicked');
-//     logout();
-//     // location.assign('/index.html');
-//   });
-// }
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    logout();
+    // location.assign('/index.html');
+  });
+}
 
 // $.ajax({
 //   url: '/api/v2/users/sendOtp',

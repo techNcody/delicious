@@ -126,13 +126,17 @@ exports.sendOtp = async (req, res, next) => {
 
 exports.login = catchAsync(async (req, res, next) => {
   try {
-    const { otp } = req.body;
+    const { otp, userState } = req.body;
 
     if (!otp) return next(new AppError('Please provide a valid OTP', 400));
 
     const user = await User.findOne({ otp });
     // console.log(user);
-    req.user = user;
+    if (user.email === userState) {
+      req.user = user;
+    } else {
+      return next(new AppError('This OTP does not belong to the user', 400));
+    }
 
     if (!user) {
       return res.status(404).json({
@@ -276,8 +280,8 @@ exports.logout = catchAsync(async (req, res, next) => {
 
   localStorage.removeItem('userName');
 
-  res.status(200).render('home', {
-    title: 'feellikehome | Home'
+  res.status(200).json({
+    status: 'success'
   });
 });
 
@@ -285,7 +289,7 @@ exports.sendMessage = (req, res, next) => {
   console.log(req.body);
 
   const toAddress = 'contact.speksolutions@gmail.com';
-  const subject = `New message from ${req.body.name.split(' ')[0]} (${
+  const subject = `New message from ${req.user.name.split(' ')[0]} (${
     req.body.email
   })`;
 
@@ -296,6 +300,37 @@ exports.sendMessage = (req, res, next) => {
     message: req.body.message,
     subject
   });
+
+  sendMailHTML(toAddress, subject, html);
+  res.status(200).json({
+    status: 'success'
+  });
+};
+
+exports.sendSubscriptionReq = (req, res, next) => {
+  console.log(req.body);
+  console.log(req.user);
+
+  const toAddress = 'contact.speksolutions@gmail.com';
+  const subject = `Subscription request from ${req.user.name.split(' ')[0]} (${
+    req.body.contactPersonMob
+  })`;
+
+  const html = pug.renderFile(
+    `${__dirname}/../views/subscriptionTemplate.pug`,
+    {
+      mealType: req.body.mealType,
+      addressLine1: req.body.addressLine1,
+      addressLine2: req.body.addressLine2,
+      addressLine3: req.body.addressLine3,
+      pinCode: req.body.pinCode,
+      landMark: req.body.landMark,
+      locality: req.body.locality,
+      contactPerson: req.body.contactPerson,
+      contactPersonMob: req.body.contactPersonMob,
+      message: req.body.message
+    }
+  );
 
   sendMailHTML(toAddress, subject, html);
   res.status(200).json({
