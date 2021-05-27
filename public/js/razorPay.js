@@ -19,10 +19,12 @@ var options = {
   }
 };
 var rzp1 = new Razorpay(options);
-payBtn.onclick = function (e) {
-  rzp1.open();
-  e.preventDefault();
-};
+if (payBtn) {
+  payBtn.onclick = function (e) {
+    rzp1.open();
+    e.preventDefault();
+  };
+}
 rzp1.on('payment.failed', function (response) {
   console.log(response.error.code);
   console.log(response.error.description);

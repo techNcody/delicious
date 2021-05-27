@@ -94,17 +94,11 @@ function showAlert(msg, duration) {
 
 const logout = async () => {
   const res = await axios('/api/v2/users/logout');
-  console.log(res);
-  console.log('Hello from the logout');
-  if (res.status === 'success') {
+  if (res.data.status === 'success') {
     location.assign('/');
   } else {
     alert('Server error, please try again.');
-    location.reload();
   }
-  // if (res.status == 'success') {
-  //   location.assign('/index.html');
-  // }
 };
 
 if (logoutBtn) {

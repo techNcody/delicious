@@ -53,8 +53,9 @@ header#header.fixed-top.d-flex.align-items-center.header-transparent
           a(href='/') Home
         li
           a(href='#menu') Menu
-        li
-          a(href='#subscription') Subscription
+        if userName
+          li
+            a(href='#subscription') Subscription
         // <li><a href="#events">Profile</a></li>
         //
           <li><a href="#chefs">Chefs</a></li>
@@ -97,7 +98,7 @@ section#hero
                 if userName
                  a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/subscription') Subscribe a meal
                 else
-                 a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/login') Login to Subscribe a Meal
+                 a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/login') Login
         // Slide 2
         .carousel-item(style='background: url();')
           .carousel-container
@@ -109,7 +110,7 @@ section#hero
                 if userName
                   a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/subscription') Subscribe a meal
                 else
-                  a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/login') Login to Subscribe a Meal
+                  a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/login') Login
       a.carousel-control-prev(href='#heroCarousel' role='button' data-slide='prev')
         span.carousel-control-prev-icon.icofont-simple-left(aria-hidden='true')
         span.sr-only Previous
@@ -149,22 +150,23 @@ main#main
             //-   | velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
             //-   | culpa qui officia deserunt mollit anim id est laborum
   // End About Section
-  // ======= Whu Us Section =======
-  section#subscription.subscription
-    .container
-      .section-title
-        h2
-          | My 
-          span Subscription
-        //- p
-        //-   | Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.
-      .row
-        .card(style='width: 18rem;')
-          .card-body
-            h3.card-title Lunch subscription
-            p.card-text Veg Meal
-            p.card-text Rs.1800
-            a.btn.btn-primary#rzp-button(type='button') Pay now
+  // ======= Subscription Section =======
+  if userName
+    section#subscription.subscription
+      .container
+        .section-title
+          h2
+            | My 
+            span Subscription
+          //- p
+          //-   | Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.
+        .row
+          .card(style='width: 18rem;')
+            .card-body
+              h3.card-title Lunch subscription
+              p.card-text Veg Meal
+              p.card-text Rs.1800
+              a.btn.btn-primary#rzp-button(type='button') Pay now
         //- .col-lg-4
         //-   .box
         //-     span Lunch
@@ -184,7 +186,7 @@ main#main
         //-     h4  Ad ad velit qui
         //-     p
         //-       | Molestiae officiis omnis illo asperiores. Aut doloribus vitae sunt debitis quo vel nam quis
-  // End Whu Us Section
+  // Subscription Section
   // ======= Menu Section =======
   section#menu.menu
     .container
@@ -223,9 +225,9 @@ main#main
               else
                 li.book-a-table.text-center
                   a(href='/login') Login to Subscribe
-              if userName
-                li.book-a-table.text-center
-                  a(href='').logout-btn Logout
+              //- if userName
+              //-   li.book-a-table.text-center
+              //-     a(href='').logout-btn Logout
       
         //- .col-lg-6.menu-item.filter-starters
         //-   .menu-content
