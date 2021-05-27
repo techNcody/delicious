@@ -69,7 +69,7 @@ header#header.fixed-top.d-flex.align-items-center.header-transparent
             a(href='/subscription') Subscribe a Meal
         else
           li.book-a-table.text-center
-            a(href='/login') Login
+            a(href='/login') Login to Subscribe
         if userName
           li.book-a-table.text-center
             a(href='').logout-btn Logout
@@ -98,7 +98,7 @@ section#hero
                 if userName
                  a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/subscription') Subscribe a meal
                 else
-                 a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/login') Login
+                 a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/login') Login to Subscribe
         // Slide 2
         .carousel-item(style='background: url();')
           .carousel-container
@@ -110,7 +110,7 @@ section#hero
                 if userName
                   a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/subscription') Subscribe a meal
                 else
-                  a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/login') Login
+                  a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/login') Login to Subscribe
       a.carousel-control-prev(href='#heroCarousel' role='button' data-slide='prev')
         span.carousel-control-prev-icon.icofont-simple-left(aria-hidden='true')
         span.sr-only Previous
@@ -150,7 +150,7 @@ main#main
             //-   | velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
             //-   | culpa qui officia deserunt mollit anim id est laborum
   // End About Section
-  // ======= Subscription Section =======
+  // ======= My subscription Section =======
   if userName
     section#subscription.subscription
       .container
@@ -158,35 +158,15 @@ main#main
           h2
             | My 
             span Subscription
-          //- p
-          //-   | Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.
         .row
-          .card(style='width: 18rem;')
+          .card(style='width: 18rem; margin-left: 10%; align-items: center;')
             .card-body
               h3.card-title Lunch subscription
               p.card-text Veg Meal
               p.card-text Rs.1800
               a.btn.btn-primary#rzp-button(type='button') Pay now
-        //- .col-lg-4
-        //-   .box
-        //-     span Lunch
-        //-     h4 24/05 to 23/06
-        //-     p
-        //-       | Paid amount: 
-        //-       | Rs. 2100
-        //- .col-lg-4.mt-4.mt-lg-0
-        //-   .box
-        //-     span 02
-        //-     h4 Repellat Nihil
-        //-     p
-        //-       | Dolorem est fugiat occaecati voluptate velit esse. Dicta veritatis dolor quod et vel dire leno para dest
-        //- .col-lg-4.mt-4.mt-lg-0
-        //-   .box
-        //-     span 03
-        //-     h4  Ad ad velit qui
-        //-     p
-        //-       | Molestiae officiis omnis illo asperiores. Aut doloribus vitae sunt debitis quo vel nam quis
-  // Subscription Section
+        
+  // End My subscription Section
   // ======= Menu Section =======
   section#menu.menu
     .container
@@ -214,20 +194,7 @@ main#main
             span Rs. 2250 per month
           .menu-ingredients
             | Roti, Rice, Chicken/Egg, Dal, Salad
-      .row.menu-container
-        .col-lg-4
-        .col-lg-4(style='margin: 5%')
-          nav.nav-menu.d-none.d-lg-block
-            ul
-              if userName
-                li.book-a-table.text-center
-                  a(href='/subscription') Subscribe a Meal
-              else
-                li.book-a-table.text-center
-                  a(href='/login') Login to Subscribe
-              //- if userName
-              //-   li.book-a-table.text-center
-              //-     a(href='').logout-btn Logout
+            
       
         //- .col-lg-6.menu-item.filter-starters
         //-   .menu-content

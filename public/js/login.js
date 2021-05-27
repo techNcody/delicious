@@ -1,5 +1,6 @@
 const loginBtn = document.getElementById('login-btn');
 const logoutBtn = document.querySelector('.logout-btn');
+// const logoutBtnButtom = document.querySelector('.logout-btn-bottom');
 const emailInput = document.getElementById('email');
 const otpInput = document.getElementById('otp');
 const getOtp = document.getElementById('get-otp');
