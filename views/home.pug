@@ -2,11 +2,11 @@ doctype html
 head
   meta(charset='utf-8')
   meta(content='width=device-width, initial-scale=1.0' name='viewport')
-  title feellikehome | Home
+  title #{title}
   meta(content='' name='description')
   meta(content='' name='keywords')
   // Favicons
-  link(href='assets/img/favicon.png' rel='icon')
+  //- link(href='assets/img/favicon.png' rel='icon')
   link(href='assets/img/apple-touch-icon.png' rel='apple-touch-icon')
   // Google Fonts
   link(href='https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,600,600i,700,700i|Satisfy|Comic+Neue:300,300i,400,400i,700,700i' rel='stylesheet')
@@ -53,7 +53,7 @@ header#header.fixed-top.d-flex.align-items-center.header-transparent
           a(href='/') Home
         li
           a(href='#menu') Menu
-        if userName
+        if (userName && (role !== 'admin'))
           li
             a(href='#subscription') Subscription
         // <li><a href="#events">Profile</a></li>
@@ -64,12 +64,15 @@ header#header.fixed-top.d-flex.align-items-center.header-transparent
           a(href='#contact') Contact
         li
           a(href='#about') About
-        if userName
+        if (userName && (role !== 'admin'))
           li.book-a-table.text-center
             a(href='/subscription') Subscribe a Meal
-        else
+        else if (!userName)
           li.book-a-table.text-center
             a(href='/login') Login to Subscribe
+        else if (userName && (role === 'admin'))
+          li.book-a-table.text-center
+            a(href='/approveSubscription') Approve Subscription
         if userName
           li.book-a-table.text-center
             a(href='#' onclick='logout()').logout-btn Logout
@@ -95,10 +98,11 @@ section#hero
               div
                 a.btn-margin-top.btn-menu.animate__animated.animate__fadeInUp.scrollto(href='#menu') Our Menu
                 |
-                if userName
-                 a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/subscription') Subscribe a meal
-                else
-                 a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/login') Login to Subscribe
+                if (role !== 'admin')
+                  if userName
+                    a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/subscription') Subscribe a meal
+                  else
+                    a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/login') Login to Subscribe
         // Slide 2
         .carousel-item(style='background: url();')
           .carousel-container
@@ -107,10 +111,11 @@ section#hero
               p.animate__animated.animate__fadeInUp The online home made meal subscription platform
               div
                 a.btn-margin-top.btn-menu.animate__animated.animate__fadeInUp.scrollto(href='#menu') Our Menu
-                if userName
-                  a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/subscription') Subscribe a meal
-                else
-                  a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/login') Login to Subscribe
+                if (role !== 'admin')
+                  if userName
+                    a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/subscription') Subscribe a meal
+                  else
+                    a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/login') Login to Subscribe
       a.carousel-control-prev(href='#heroCarousel' role='button' data-slide='prev')
         span.carousel-control-prev-icon.icofont-simple-left(aria-hidden='true')
         span.sr-only Previous
@@ -325,17 +330,17 @@ main#main
       form.send-message-form(action='/api/v2/users/sendMessage' method='post' role='form')
         .form-row
           .col-md-4.form-group
-            input#name.form-control(type='text' name='name' placeholder='Your full name..' required)
+            input#name.form-control(type='text' name='name' placeholder='Your full name *' required)
             .validate
           .col-md-4.form-group
-            input#email.form-control(type='email' name='email' placeholder='Your email address..' required)
+            input#email.form-control(type='email' name='email' placeholder='Your email address *' required)
             .validate
           .col-md-4.form-group
-            input#phone.form-control(type="tel" name="phone" placeholder="Your mobile number.." pattern="[0-9]{10}" required)
+            input#phone.form-control(type="tel" name="phone" placeholder="Your mobile number *" pattern="[0-9]{10}" required)
             .validate
         //- .form-group
         .form-group
-          textarea.form-control(name='message' rows='5' placeholder='Please write something for us..' required)
+          textarea.form-control(name='message' rows='5' placeholder='Please write something for us.. *' required)
           .validate
         .mb-3
           .loading Loading

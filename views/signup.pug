@@ -2,11 +2,11 @@ doctype html
 head
   meta(charset='utf-8')
   meta(content='width=device-width, initial-scale=1.0' name='viewport')
-  title feellikehome | Signup
+  title #{title}
   meta(content='' name='description')
   meta(content='' name='keywords')
   // Favicons
-  link(href='assets/img/favicon.png' rel='icon')
+  //- link(href='assets/img/favicon.png' rel='icon')
   link(href='assets/img/apple-touch-icon.png' rel='apple-touch-icon')
   // Google Fonts
   link(href='https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,600,600i,700,700i|Satisfy|Comic+Neue:300,300i,400,400i,700,700i' rel='stylesheet')
@@ -32,42 +32,42 @@ head
     .container
       .section-title
         h2
-          | Please submit 
-          span the registration form
+          | Registration 
+          span form
       form.send-message-form(action='/api/v2/users/signup' method='post' role='form')
         .form-row
           .col-md-4.form-group
             select.custom-select(name='role' required)
-              option(selected='none') User type
+              option(selected='none') User type *
               option(value='customer') Customer
               option(value='vendor') Vendor
             .validate
           .col-md-4.form-group
-            input#phone.form-control(type="text" name="name" placeholder="Your name" required)
+            input#phone.form-control(type="text" name="name" placeholder="Your name *" required)
             .validate
           .col-md-4.form-group
-            input#phone.form-control(type="tel" name="mobile" placeholder="Your mobile number" required)
+            input#phone.form-control(type="tel" name="mobile" placeholder="Your mobile number *" required)
             .validate
           .col-md-4.form-group
-            input#phone.form-control(type="email" name="email" placeholder="Your email" required)
+            input#phone.form-control(type="email" name="email" placeholder="Your email *" required)
             .validate
           .col-md-4.form-group
-            input#email.form-control(type='text' name='addressLine1' placeholder='Address line 1' required)
+            input#email.form-control(type='text' name='addressLine1' placeholder='Address line 1 *' required)
             .validate
           .col-md-4.form-group
-            input#phone.form-control(type="text" name="addressLine2" placeholder="Address line 2" required)
+            input#phone.form-control(type="text" name="addressLine2" placeholder="Address line 2 *" required)
             .validate
           .col-md-4.form-group
-            input#phone.form-control(type="text" name="addressLine3" placeholder="Address line 3" required)
+            input#phone.form-control(type="text" name="addressLine3" placeholder="Address line 3 *" required)
             .validate
           .col-md-4.form-group
-            input#phone.form-control(type="number" name="pinCode" placeholder="Pin code" required)
+            input#phone.form-control(type="number" name="pinCode" placeholder="Pin code *" required)
             .validate
           .col-md-4.form-group
-            input#phone.form-control(type="text" name="landMark" placeholder="Land mark" required)
+            input#phone.form-control(type="text" name="landMark" placeholder="Land mark *" required)
             .validate
           .col-md-4.form-group
-            input#phone.form-control(type="text" name="locality" placeholder="Locality" required)
+            input#phone.form-control(type="text" name="locality" placeholder="Locality *" required)
             .validate
           .col-md-4.form-group
             input#phone.form-control(type="text" name="aadhaar" placeholder="Your aadhaar number")
@@ -85,7 +85,7 @@ head
           .sent-message
             | You have registered successfully, Thank you!
         .text-center
-          button.btn.btn-warning(type='submit') Send Request
+          button.btn.btn-warning(type='submit') Register
           //- button.btn.btn-primary#rzp-button(type='button') Pay
 
     // Vendor JS Files

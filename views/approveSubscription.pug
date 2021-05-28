@@ -32,51 +32,38 @@ head
     .container
       .section-title
         h2
-          | Send a 
-          span subscription request
-      form.send-message-form(action='/api/v2/users/sendSubscriptionReq' method='post' role='form')
+          | Admin Approval
+          span  Portal (AAP)
+      form.send-message-form(action='/api/v2/users/approveSubscription' method='post' role='form')
         .form-row
           .col-md-4.form-group
-            select.custom-select(name='mealType')
-              option(selected='none') Meal type
-              option(value='veg') Veg
-              option(value='non-veg') Non-veg
+            select.custom-select(name='customer')
+              option(selected='none') Select Customer
+              each customer in customers
+                option(value=`${customer.email}`) #{customer.email}
+                //- option(value='non-veg') Non-veg
             .validate
           .col-md-4.form-group
-            input#email.form-control(type='text' name='addressLine1' placeholder='Address line 1 *' required)
+            select.custom-select(name='vendor')
+              option(selected='none') Select Vendor
+              each vendor in vendors
+                option(value=`${vendor.email}`) #{vendor.email}
+                //- option(value='non-veg') Non-veg
             .validate
           .col-md-4.form-group
-            input#phone.form-control(type="text" name="addressLine2" placeholder="Address line 2 *" required)
+            select.custom-select(name='requestId')
+              option(selected='none') Select Request Id.
+              each request in requests
+                option(value=`${request._id}`) #{request._id}
+                //- option(value='non-veg') Non-veg
             .validate
-          .col-md-4.form-group
-            input#phone.form-control(type="text" name="addressLine3" placeholder="Address line 3 *" required)
-            .validate
-          .col-md-4.form-group
-            input#phone.form-control(type="number" name="pincode" placeholder="Pincode *" required)
-            .validate
-          .col-md-4.form-group
-            input#phone.form-control(type="text" name="landmark" placeholder="Landmark *" required)
-            .validate
-          .col-md-4.form-group
-            input#phone.form-control(type="text" name="locality" placeholder="Locality *" required)
-            .validate
-          .col-md-4.form-group
-            input#phone.form-control(type="text" name="contactPerson" placeholder="Contact person *" required)
-            .validate
-          .col-md-4.form-group
-            input#phone.form-control(type="tel" name="contactPersonMobileNumber" placeholder="Contact person mobile number *" required)
-            .validate
-        //- .form-group
-        .form-group
-          textarea.form-control(name='message' rows='5' placeholder='Your message')
-          .validate
         .mb-3
           .loading Loading
           .error-message
           .sent-message
-            | Your subscription request was sent. We will call back or send an Email to confirm your subscription. Thank you!
+            | Subscription is approved successfully. Thank you!
         .text-center
-          button.btn.btn-warning(type='submit') Send Request
+          button.btn.btn-warning(type='submit') Approve
           //- button.btn.btn-primary#rzp-button(type='button') Pay
 
     // Vendor JS Files
@@ -91,5 +78,4 @@ script(src='assets/vendor/owl.carousel/owl.carousel.min.js')
 // Template Main JS File
 script(src='assets/js/main.js')
 script(src='https://unpkg.com/axios/dist/axios.min.js')
-script(src='js/login.js')
-script(src='js/subscription.js')
+script(src='js/approveSubscription.js')

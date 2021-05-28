@@ -8,6 +8,7 @@ const nodemailer = require('nodemailer');
 const Email = require('email-templates');
 
 const User = require('../models/userModel');
+const Request = require('../models/requestModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
@@ -341,13 +342,13 @@ exports.sendMessage = (req, res, next) => {
   });
 };
 
-exports.sendSubscriptionReq = (req, res, next) => {
-  console.log(req.body);
-  console.log(req.user);
+exports.sendSubscriptionReq = catchAsync(async (req, res, next) => {
+  // console.log(req.body);
+  // console.log(req.user);
 
   const toAddress = 'contact.speksolutions@gmail.com';
   const subject = `Subscription request from ${req.user.name.split(' ')[0]} (${
-    req.body.contactPersonMob
+    req.body.contactPersonMobileNumber
   })`;
 
   const html = pug.renderFile(
@@ -357,29 +358,46 @@ exports.sendSubscriptionReq = (req, res, next) => {
       addressLine1: req.body.addressLine1,
       addressLine2: req.body.addressLine2,
       addressLine3: req.body.addressLine3,
-      pinCode: req.body.pinCode,
-      landMark: req.body.landMark,
+      pinCode: req.body.pincode,
+      landMark: req.body.landmark,
       locality: req.body.locality,
       contactPerson: req.body.contactPerson,
-      contactPersonMob: req.body.contactPersonMob,
+      contactPersonMob: req.body.contactPersonMobileNumber,
       message: req.body.message
     }
   );
 
   sendMailHTML(toAddress, subject, html);
+
+  await Request.create({
+    mealType: req.body.mealType,
+    userCustomerEmail: req.user.email,
+    address: [
+      {
+        addressLine1: req.body.addressLine1,
+        addressLine2: req.body.addressLine2,
+        addressLine3: req.body.addressLine3,
+        pincode: req.body.pincode,
+        landmark: req.body.landmark,
+        locality: req.body.locality
+      }
+    ],
+    contactPerson: req.body.contactPerson,
+    contactPersonMobileNumber: req.body.contactPersonMobileNumber,
+    message: req.body.message
+  });
+
+  res.status(200).json({
+    status: 'success'
+  });
+});
+
+exports.approveSubscription = async (req, res, next) => {
+  // console.log(req.body);
+  await Request.findByIdAndUpdate(req.body.requestId, {
+    userVendorEmail: req.body.vendor
+  });
   res.status(200).json({
     status: 'success'
   });
 };
-
-// $('.php-email-form').find('.sent-message').slideDown();
-// S.fn.init [div.sent-message, prevObject: S.fn.init(1)]
-// $('.php-email-form').find('.sent-message').slideUp();
-// S.fn.init [div.sent-message, prevObject: S.fn.init(1)]
-// maps.google.com/maps/gen_204?target=api&ev=api_snap&cad=host:www.google.com,v:44,r:100,client:google-maps-embed,t:9-515037,Mm-p:1-if,Mm-h:1-if,Ox-p:1-if,Ox-h:1-if,Rs-p:1-if,Rs-h:1-if,src:apiv3,token:82o4rrmdzl,ts:1969j6:1 GET https://maps.google.com/maps/gen_204?target=api&ev=api_snap&cad=host:www.google.com,v:44,r:100,client:google-maps-embed,t:9-515037,Mm-p:1-if,Mm-h:1-if,Ox-p:1-if,Ox-h:1-if,Rs-p:1-if,Rs-h:1-if,src:apiv3,token:82o4rrmdzl,ts:1969j6 net::ERR_NAME_NOT_RESOLVED
-// Image (async)
-// eY.Rf @ stats.js:4
-// Bja @ stats.js:3
-// (anonymous) @ stats.js:3
-// $('.php-email-form').find('.loading').slideUp();
-// S.fn.init [div.loading, prevObject: S.fn.init(1)]

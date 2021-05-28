@@ -12,6 +12,7 @@ router.route('/logout').get(authController.logout);
 router.route('/signup').post(authController.signUp);
 router.route('/protect').get(authController.protect);
 router.route('/sendMessage').post(authController.sendMessage);
+router.route('/approveSubscription').post(authController.approveSubscription);
 router
   .route('/sendSubscriptionReq')
   .post(authController.protect, authController.sendSubscriptionReq);
