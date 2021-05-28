@@ -5,6 +5,7 @@ const viewController = require('./../controllers/viewController');
 const authController = require('../controllers/authController');
 
 router.get('/', authController.isLoggedIn, viewController.getHomePage);
+router.get('/signup', viewController.getSignup);
 router.get('/login', authController.isLoggedIn, viewController.getLogin);
 router.get(
   '/subscription',

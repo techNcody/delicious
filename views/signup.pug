@@ -2,7 +2,7 @@ doctype html
 head
   meta(charset='utf-8')
   meta(content='width=device-width, initial-scale=1.0' name='viewport')
-  title feellikehome | Subscription
+  title feellikehome | Signup
   meta(content='' name='description')
   meta(content='' name='keywords')
   // Favicons
@@ -32,15 +32,24 @@ head
     .container
       .section-title
         h2
-          | Send a request to 
-          span approve your Subscription
-      form.send-message-form(action='/api/v2/users/sendSubscriptionReq' method='post' role='form')
+          | Please submit 
+          span the registration form
+      form.send-message-form(action='/api/v2/users/signup' method='post' role='form')
         .form-row
           .col-md-4.form-group
-            select.custom-select(name='mealType')
-              option(selected='none') Meal type
-              option(value='veg') Veg
-              option(value='non-veg') Non-veg
+            select.custom-select(name='role' required)
+              option(selected='none') User type
+              option(value='customer') Customer
+              option(value='vendor') Vendor
+            .validate
+          .col-md-4.form-group
+            input#phone.form-control(type="text" name="name" placeholder="Your name" required)
+            .validate
+          .col-md-4.form-group
+            input#phone.form-control(type="tel" name="mobile" placeholder="Your mobile number" required)
+            .validate
+          .col-md-4.form-group
+            input#phone.form-control(type="email" name="email" placeholder="Your email" required)
             .validate
           .col-md-4.form-group
             input#email.form-control(type='text' name='addressLine1' placeholder='Address line 1' required)
@@ -61,20 +70,20 @@ head
             input#phone.form-control(type="text" name="locality" placeholder="Locality" required)
             .validate
           .col-md-4.form-group
-            input#phone.form-control(type="text" name="contactPerson" placeholder="Contact person" required)
+            input#phone.form-control(type="text" name="aadhaar" placeholder="Your aadhaar number")
             .validate
           .col-md-4.form-group
-            input#phone.form-control(type="tel" name="contactPersonMob" placeholder="Contact person mobile number" required)
+            input#phone.form-control(type="text" name="companyName" placeholder="Your company name (If you are a vendor)")
             .validate
-        //- .form-group
-        .form-group
-          textarea.form-control(name='message' rows='5' placeholder='Your message')
-          .validate
+          .col-md-4.form-group
+            input#phone.form-control(type="text" name="gstin" placeholder="Your GSTIN (If you are a vendor)")
+            .validate
+        
         .mb-3
           .loading Loading
           .error-message
           .sent-message
-            | Your subscription request was sent. We will call back or send an Email to confirm your subscription. Thank you!
+            | You have registered successfully, Thank you!
         .text-center
           button.btn.btn-warning(type='submit') Send Request
           //- button.btn.btn-primary#rzp-button(type='button') Pay
@@ -91,5 +100,4 @@ script(src='assets/vendor/owl.carousel/owl.carousel.min.js')
 // Template Main JS File
 script(src='assets/js/main.js')
 script(src='https://unpkg.com/axios/dist/axios.min.js')
-script(src='js/login.js')
-script(src='js/subscription.js')
+script(src='js/signup.js')

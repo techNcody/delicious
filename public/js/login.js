@@ -64,6 +64,7 @@ if (getOtpForm) {
 
 async function getOtpFn(email) {
   try {
+    document.getElementById('login-loader').classList.remove('dl-hide-el');
     const result = await axios({
       method: 'POST',
       url: '/api/v2/users/sendOtp',
@@ -71,9 +72,17 @@ async function getOtpFn(email) {
         email
       }
     });
-    alert('An OTP has been sent to your registered email id');
-    getOtpForm.classList.add('dl-hide-el');
-    verifyOtpForm.classList.remove('dl-hide-el');
+    // console.log(result.data.data.status);
+    if (result.data.data.status === 'success') {
+      document.getElementById('login-loader').classList.add('dl-hide-el');
+      alert('An OTP has been sent to your registered email id');
+      getOtpForm.classList.add('dl-hide-el');
+      verifyOtpForm.classList.remove('dl-hide-el');
+    } else {
+      document.getElementById('login-loader').classList.add('dl-hide-el');
+      alert('This email is not registered.');
+      // location.reload();
+    }
   } catch (err) {
     alert('Invalid Email!!');
     console.log(err);

@@ -25,7 +25,9 @@ body.blur-bgimage
               span.fa.fa-user-o
             h3.text-center.mb-4 Login
             #login-loader.spinner-border.text-warning.dl-hide-el(style='position:absolute; left: 45%; top: 46%;')
-            p.text-center.mb-4 Welcome to feellikehome.com
+            a(href='/signup')
+              p.text-center.mb-4 
+               u Click here to signup
             form#getOtp.getOtp-form(action='#')
               .form-group
                 input#email.form-control.rounded-left(type='text' style='text-align: center;' placeholder='Enter your Email' required='')

@@ -65,11 +65,37 @@ const sendMail = function (toAddress, subject, text) {
 
 exports.signUp = async (req, res, next) => {
   try {
+    console.log(req.body);
+    let role, aadhaarNumber, companyName, GSTIN, mobileNumber, pincode;
+    mobileNumber = parseInt(req.body.mobile);
+    pincode = parseInt(req.body.pinCode);
+    if (req.body.role) role = req.body.role;
+    if (req.body.aadhaarNumber)
+      aadhaarNumber = parseInt(req.body.aadhaarNumber);
+    if (req.body.companyName) companyName = req.body.companyName;
+    if (req.body.GSTIN) GSTIN = req.body.GSTIN;
+    // console.log(pincode);
+    // console.log()
+    // console.log()
+
     const newUser = await User.create({
       name: req.body.name,
-      mobileNumber: req.body.mobileNumber,
+      mobileNumber,
       email: req.body.email,
-      role: req.body.role
+      role,
+      address: [
+        {
+          addressLine1: req.body.addressLine1,
+          addressLine2: req.body.addressLine2,
+          addressLine3: req.body.addressLine3,
+          pincode,
+          landmark: req.body.landmark,
+          locality: req.body.locality
+        }
+      ],
+      aadhaarNumber,
+      companyName,
+      GSTIN
     });
 
     // if (password !== passwordConfirm) {
@@ -92,7 +118,7 @@ exports.signUp = async (req, res, next) => {
       }
     });
   } catch (err) {
-    // console.log(err);
+    console.log(err);
     return res.status(400).json({
       data: {
         status: 'fail',
@@ -108,6 +134,13 @@ exports.sendOtp = async (req, res, next) => {
 
   // 1) Update OTP in user data
   const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(200).json({
+      data: {
+        status: 'error'
+      }
+    });
+  }
 
   const newUser = await User.findByIdAndUpdate(user.id, { otp });
   // req.user = newUser;
@@ -131,12 +164,6 @@ exports.login = catchAsync(async (req, res, next) => {
     if (!otp) return next(new AppError('Please provide a valid OTP', 400));
 
     const user = await User.findOne({ otp });
-    // console.log(user);
-    if (user.email === userState) {
-      req.user = user;
-    } else {
-      return next(new AppError('This OTP does not belong to the user', 400));
-    }
 
     if (!user) {
       return res.status(404).json({
@@ -145,6 +172,13 @@ exports.login = catchAsync(async (req, res, next) => {
           msg: 'Invalid OTP, Please try again!'
         }
       });
+    }
+
+    // console.log(user);
+    if (user.email === userState) {
+      req.user = user;
+    } else {
+      return next(new AppError('This OTP does not belong to the user', 400));
     }
 
     const id = user.id;

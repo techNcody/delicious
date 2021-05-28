@@ -35,3 +35,9 @@ exports.getSubscription = (req, res, next) => {
     title: 'feellikehome | subscription'
   });
 };
+
+exports.getSignup = (req, res, next) => {
+  res.status(200).render('signup', {
+    title: 'feellikehome | signup'
+  });
+};
