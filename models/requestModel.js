@@ -44,7 +44,16 @@ const requestSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  message: String
+  message: String,
+  status: {
+    type: String,
+    enum: ['approved', 'pending', 'expired'],
+    default: 'pending'
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now()
+  }
 });
 
 const Request = mongoose.model('Request', requestSchema);

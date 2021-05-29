@@ -394,10 +394,27 @@ exports.sendSubscriptionReq = catchAsync(async (req, res, next) => {
 
 exports.approveSubscription = async (req, res, next) => {
   // console.log(req.body);
-  await Request.findByIdAndUpdate(req.body.requestId, {
-    userVendorEmail: req.body.vendor
-  });
-  res.status(200).json({
-    status: 'success'
-  });
+  const newReq = await Request.findOneAndUpdate(
+    { userCustomerEmail: req.body.customer },
+    {
+      userVendorEmail: req.body.vendor,
+      status: 'approved'
+    },
+    { new: true }
+  );
+  if (newReq) {
+    // send a approval confirmation mail to user
+    const text = `Hi, Your subscription has been approved. Please login to feellikehome app, go to subscription section and complete the payment to get your subscription done.`;
+    const subject = 'Meal subscription approval';
+    sendMail(newReq.userCustomerEmail, subject, text);
+
+    res.status(200).json({
+      status: 'success',
+      data: newReq
+    });
+  } else {
+    res.status(400).json({
+      status: 'error'
+    });
+  }
 };

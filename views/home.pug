@@ -43,28 +43,30 @@ header#header.fixed-top.d-flex.align-items-center.header-transparent
   .container.d-flex.align-items-center
     .logo.mr-auto
       h1.text-light
-        a(href='/')
-          span feellikehome
+        if (role !== 'admin')
+          a(href='/')
+            span feellikehome
+        else 
+          a(href='/')
+            span feellikehome Admin
       // Uncomment below if you prefer to use an image logo
       // <a href="home.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>
     nav.nav-menu.d-none.d-lg-block
       ul
         li.active
           a(href='/') Home
-        li
-          a(href='#menu') Menu
+        if (role !== 'admin')
+          li
+            a(href='#menu') Menu
         if (userName && (role !== 'admin'))
           li
             a(href='#subscription') Subscription
-        // <li><a href="#events">Profile</a></li>
-        //
-          <li><a href="#chefs">Chefs</a></li>
-          <li><a href="#gallery">Gallery</a></li>
-        li
-          a(href='#contact') Contact
-        li
-          a(href='#about') About
-        if (userName && (role !== 'admin'))
+        if (role !== 'admin')
+          li
+            a(href='#contact') Contact
+          li
+            a(href='#about') About
+        if (userName && (role !== 'admin') && !request)
           li.book-a-table.text-center
             a(href='/subscription') Subscribe a Meal
         else if (!userName)
@@ -99,10 +101,12 @@ section#hero
                 a.btn-margin-top.btn-menu.animate__animated.animate__fadeInUp.scrollto(href='#menu') Our Menu
                 |
                 if (role !== 'admin')
-                  if userName
+                  if (userName  && !request)
                     a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/subscription') Subscribe a meal
-                  else
+                  else if (!userName)
                     a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/login') Login to Subscribe
+                else if (role === 'admin')
+                  a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/approveSubscription') Approve Subscription
         // Slide 2
         .carousel-item(style='background: url();')
           .carousel-container
@@ -116,6 +120,8 @@ section#hero
                     a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/subscription') Subscribe a meal
                   else
                     a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/login') Login to Subscribe
+                else 
+                  a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/approveSubscription') Approve Subscription
       a.carousel-control-prev(href='#heroCarousel' role='button' data-slide='prev')
         span.carousel-control-prev-icon.icofont-simple-left(aria-hidden='true')
         span.sr-only Previous
@@ -123,52 +129,41 @@ section#hero
         span.carousel-control-next-icon.icofont-simple-right(aria-hidden='true')
         span.sr-only Next
 // End Hero
-main#main
-  // ======= About Section =======
-  section#about.about
-    .container-fluid
-      .row
-        .col-lg-5.align-items-stretch.video-box(style='background-image: url("assets/img/specials-1.jpg");')
-          a.venobox.play-btn.mb-4(href='https://www.youtube.com/watch?v=ZQ_pL_b6Uh4' data-vbtype='video' data-autoplay='true')
-        .col-lg-7.d-flex.flex-column.justify-content-center.align-items-stretch
-          .content
-            h3
-              | Meal delivery orders are typically on demand, 
-              strong  intended to be eaten right away, and include hot, already-prepared food.
-            p.font-italic
-              | In addition to paying for the food, customers will often have to pay a delivery fee. The delivery fee will cover the cost of gas or other transportation costs, but usually does not go to the delivery person.
-            //- p.font-italic
-            //-   | Since 1995, companies such as Waiter.com have their own interfaces where customers order food 
-            //-   | from nearby restaurants that have partnered with the service.
-            ul
-              li
-                i.bx.bx-check-double
-                |  We deliver hundreds of thousands of lunches to paying subscribers every workday through a system of rail and bicycle links.
-              li
-                i.bx.bx-check-double
-                |  The lunches are sent in tiffin carriers, and are prepared in the late morning by either a restaurant or family member typically a wife for a working husband.
-              li
-                i.bx.bx-check-double
-                |  since many families still follow traditional asymmetrical gender roles. The tiffins are then returned either in the afternoon or the next day by the same system..
-            //- p
-            //-   | Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-            //-   | velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            //-   | culpa qui officia deserunt mollit anim id est laborum
+if (role !== 'admin')
+  main#main
+    // ======= About Section =======
+    section#about.about
+      .container-fluid
+        .row
+          .col-lg-5.align-items-stretch.video-box(style='background-image: url("assets/img/specials-1.jpg");')
+            a.venobox.play-btn.mb-4(href='https://www.youtube.com/watch?v=ZQ_pL_b6Uh4' data-vbtype='video' data-autoplay='true')
+          .col-lg-7.d-flex.flex-column.justify-content-center.align-items-stretch
+            .content
+              ul
+                li
+                  i.bx.bx-check-double
+                  |  We deliver hundreds of thousands of lunches to paying subscribers every workday through a system of rail and bicycle links.
+                li
+                  i.bx.bx-check-double
+                  |  The lunches are sent in tiffin carriers, and are prepared in the late morning by either a restaurant or family member typically a wife for a working husband.
+                li
+                  i.bx.bx-check-double
+                  |  since many families still follow traditional asymmetrical gender roles. The tiffins are then returned either in the afternoon or the next day by the same system.
   // End About Section
   // ======= My subscription Section =======
-  if userName
+  if (request && (role !== 'admin'))
     section#subscription.subscription
       .container
         .section-title
           h2
-            | My 
-            span Subscription
+            | Subscription 
+            span Payment
         .row
           .card(style='width: 18rem; margin-left: 10%; align-items: center;')
             .card-body
               h3.card-title Lunch subscription
-              p.card-text Veg Meal
-              p.card-text Rs.1800
+              p.card-text #{request.mealType}
+              p.card-text Rs. #{amount}
               a.btn.btn-primary#rzp-button(type='button') Pay now
         
   // End My subscription Section
@@ -199,155 +194,73 @@ main#main
             span Rs. 2250 per month
           .menu-ingredients
             | Roti, Rice, Chicken/Egg, Dal, Salad
-            
-      
-        //- .col-lg-6.menu-item.filter-starters
-        //-   .menu-content
-        //-     a(href='#') Crab Cake
-        //-     span Rs. 55
-        //-   .menu-ingredients
-        //-     | A delicate crab cake served on a toasted roll with lettuce and tartar sauce
-        //- .col-lg-6.menu-item.filter-salads
-        //-   .menu-content
-        //-     a(href='#') Caesar Selections
-        //-     span Rs. 70
-        //-   .menu-ingredients
-        //-     | Lorem, deren, trataro, filede, nerada
-        //- .col-lg-6.menu-item.filter-specialty
-        //-   .menu-content
-        //-     a(href='#') Tuscan Grilled
-        //-     span Rs. 90
-        //-   .menu-ingredients
-        //-     | Grilled chicken with provolone, artichoke hearts, and roasted red pesto
-        //- .col-lg-6.menu-item.filter-starters
-        //-   .menu-content
-        //-     a(href='#') Mozzarella Stick
-        //-     span Rs. 50
-        //-   .menu-ingredients
-        //-     | Lorem, deren, trataro, filede, nerada
-        //- .col-lg-6.menu-item.filter-salads
-        //-   .menu-content
-        //-     a(href='#') Greek Salad
-        //-     span Rs. 60
-        //-   .menu-ingredients
-        //-     | Fresh spinach, crisp romaine, tomatoes, and Greek olives
-        //- .col-lg-6.menu-item.filter-salads
-        //-   .menu-content
-        //-     a(href='#') Spinach Salad
-        //-     span Rs.65
-        //-   .menu-ingredients
-        //-     | Fresh spinach with mushrooms, hard boiled egg, and warm bacon vinaigrette
-        //- .col-lg-6.menu-item.filter-specialty
-        //-   .menu-content
-        //-     a(href='#') Lobster Roll
-        //-     span Rs. 75
-        //-   .menu-ingredients
-        //-     | Plump lobster meat, mayo and crisp lettuce on a toasted bulky roll
   // End Menu Section
-  // ======= Subscription Section =======
-  //- section#book-a-table.book-a-table
-  //-   .container
-  //-     .section-title
-  //-       h2
-  //-         | Send a Message to 
-  //-         span Subscribe your Meal
-  //-       // <p>Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.</p>
-  //-     form.php-email-form(action='forms/book-a-table.php' method='post' role='form')
-  //-       .form-row
-  //-         .col-lg-4.col-md-6.form-group
-  //-           input#name.form-control(type='text' name='name' placeholder='Your Name' data-rule='minlen:4' data-msg='Please enter at least 4 chars')
-  //-           .validate
-  //-         .col-lg-4.col-md-6.form-group
-  //-           input#email.form-control(type='email' name='email' placeholder='Your Email' data-rule='email' data-msg='Please enter a valid email')
-  //-           .validate
-  //-         .col-lg-4.col-md-6.form-group
-  //-           input#phone.form-control(type='text' name='phone' placeholder='Your Phone' data-rule='minlen:4' data-msg='Please enter at least 4 chars')
-  //-           .validate
-  //-         .col-lg-4.col-md-6.form-group
-  //-           input#date.form-control(type='text' name='date' placeholder='Date' data-rule='minlen:4' data-msg='Please enter at least 4 chars')
-  //-           .validate
-  //-         .col-lg-4.col-md-6.form-group
-  //-           input#time.form-control(type='text' name='time' placeholder='Time' data-rule='minlen:4' data-msg='Please enter at least 4 chars')
-  //-           .validate
-  //-         .col-lg-4.col-md-6.form-group
-  //-           input#people.form-control(type='number' name='people' placeholder='# of people' data-rule='minlen:1' data-msg='Please enter at least 1 chars')
-  //-           .validate
-  //-       .form-group
-  //-         textarea.form-control(name='message' rows='5' placeholder='Message')
-  //-         .validate
-  //-       .mb-3
-  //-         .loading Loading
-  //-         .error-message
-  //-         .sent-message
-  //-           | Your booking request was sent. We will call back or send an Email to confirm your reservation. Thank you!
-  //-       .text-center
-  //-         button(type='submit') Send Message
-  // Subscription Section
   // ======= Contact Section =======
-  section#contact.contact
-    .container
-      .section-title
-        h2
-          span Contact
-          |  Us
-        //- p
-        //-   | Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.
-    .map
-      //- iframe(style='border:0; width: 100%; height: 350px;' src='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621' frameborder='0' allowfullscreen='')
-      iframe(src='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7367.457715813132!2d88.37688344232788!3d22.589242197768503!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x19e4a4abee991a24!2sVinayak%20Enclave!5e0!3m2!1sen!2sin!4v1621769836341!5m2!1sen!2sin' width='100%' height='350' style='border:0;' allowfullscreen='' loading='lazy')
+  if (role !== 'admin')
+    section#contact.contact
+      .container
+        .section-title
+          h2
+            span Contact
+            |  Us
+          //- p
+          //-   | Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.
+      .map
+        //- iframe(style='border:0; width: 100%; height: 350px;' src='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621' frameborder='0' allowfullscreen='')
+        iframe(src='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7367.457715813132!2d88.37688344232788!3d22.589242197768503!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x19e4a4abee991a24!2sVinayak%20Enclave!5e0!3m2!1sen!2sin!4v1621769836341!5m2!1sen!2sin' width='100%' height='350' style='border:0;' allowfullscreen='' loading='lazy')
 
-    .container.mt-5
-      .info-wrap
-        .row
-          .col-lg-3.col-md-6.info
-            i.icofont-google-map
-            h4 Location:
-            p
-              | Vinayak Enclave, Block A, Flat 5A
-              br
-              | 41, Shimla Road, Kolkata - 700006
-          .col-lg-3.col-md-6.info.mt-4.mt-lg-0
-            i.icofont-clock-time.icofont-rotate-90
-            h4 Open Hours:
-            p
-              | Monday-Saturday:
-              br
-              | 11:00 AM - 23:00 PM
-          .col-lg-3.col-md-6.info.mt-4.mt-lg-0
-            i.icofont-envelope
-            h4 Email:
-            p
-              | contact.speksolutions@gmail.com
-              //- br
-              //- | contact@example.com
-          .col-lg-3.col-md-6.info.mt-4.mt-lg-0
-            i.icofont-phone
-            h4 Call:
-            p
-              | 7003930318
-              br
-              | 8617734745
-      form.send-message-form(action='/api/v2/users/sendMessage' method='post' role='form')
-        .form-row
-          .col-md-4.form-group
-            input#name.form-control(type='text' name='name' placeholder='Your full name *' required)
+      .container.mt-5
+        .info-wrap
+          .row
+            .col-lg-3.col-md-6.info
+              i.icofont-google-map
+              h4 Location:
+              p
+                | Vinayak Enclave, Block A, Flat 5A
+                br
+                | 41, Shimla Road, Kolkata - 700006
+            .col-lg-3.col-md-6.info.mt-4.mt-lg-0
+              i.icofont-clock-time.icofont-rotate-90
+              h4 Open Hours:
+              p
+                | Monday-Saturday:
+                br
+                | 11:00 AM - 23:00 PM
+            .col-lg-3.col-md-6.info.mt-4.mt-lg-0
+              i.icofont-envelope
+              h4 Email:
+              p
+                | contact.speksolutions@gmail.com
+                //- br
+                //- | contact@example.com
+            .col-lg-3.col-md-6.info.mt-4.mt-lg-0
+              i.icofont-phone
+              h4 Call:
+              p
+                | 7003930318
+                br
+                | 8617734745
+        form.send-message-form(action='/api/v2/users/sendMessage' method='post' role='form')
+          .form-row
+            .col-md-4.form-group
+              input#name.form-control(type='text' name='name' placeholder='Your full name *' required)
+              .validate
+            .col-md-4.form-group
+              input#email.form-control(type='email' name='email' placeholder='Your email address *' required)
+              .validate
+            .col-md-4.form-group
+              input#phone.form-control(type="tel" name="phone" placeholder="Your mobile number *" pattern="[0-9]{10}" required)
+              .validate
+          //- .form-group
+          .form-group
+            textarea.form-control(name='message' rows='5' placeholder='Please write something for us.. *' required)
             .validate
-          .col-md-4.form-group
-            input#email.form-control(type='email' name='email' placeholder='Your email address *' required)
-            .validate
-          .col-md-4.form-group
-            input#phone.form-control(type="tel" name="phone" placeholder="Your mobile number *" pattern="[0-9]{10}" required)
-            .validate
-        //- .form-group
-        .form-group
-          textarea.form-control(name='message' rows='5' placeholder='Please write something for us.. *' required)
-          .validate
-        .mb-3
-          .loading Loading
-          .error-message
-          .sent-message Your message has been sent. Thank you!
-        .text-center
-          button(type='submit') Send Message
+          .mb-3
+            .loading Loading
+            .error-message
+            .sent-message Your message has been sent. Thank you!
+          .text-center
+            button(type='submit') Send Message
   // End Contact Section
 // End #main
 // ======= Footer =======

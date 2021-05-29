@@ -1,4 +1,5 @@
 const Razorpay = require('razorpay');
+const Request = require('../models/requestModel');
 
 var instance = new Razorpay({
   key_id: 'rzp_test_8DuvnthMFg2vEm',
@@ -6,22 +7,38 @@ var instance = new Razorpay({
 });
 
 exports.createOrder = async (req, res, next) => {
-  const amount = 5000 * 100;
+  let amount = 0;
+  // console.log(req.user);
+  const request = await Request.findOne({
+    userCustomerEmail: req.user.email
+  });
+  // console.log(request);
+  if (request) {
+    if (request.mealType === 'non-veg') {
+      amount = 2100 * 100;
+    } else if (request.mealType === 'veg') {
+      amount = 1800 * 100;
+    }
+  }
+  // const amount = 5000 * 100;
   const currency = 'INR';
-  const receipt = 'Receipt no. 1';
+  const receipt = 'Reciept no.';
   const notes = {
-    notes_key_1: 'Tea, Earl Grey, Hot',
-    notes_key_2: 'Tea, Earl Grey… decaf.'
+    notes_key_1: request.mealType
+    // notes_key_2: 'Tea, Earl Grey… decaf.'
   };
   instance.orders
     .create({ amount, currency, receipt, notes })
     .then((response) => {
+      console.log(response);
       res.status(200).json({
         status: 'success',
-        data: response
+        data: response,
+        user: req.user
       });
     })
     .catch((error) => {
+      console.log(error);
       res.status(400).json({
         status: 'error',
         data: error

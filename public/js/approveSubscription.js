@@ -16,7 +16,8 @@ $('.send-message-form').submit(function (e) {
       //   window.setTimeout(function () {
       //     $('.send-message-form').find('.sent-message').slideUp();
       //   }, 3000);
-      location.assign('/');
+      location.reload();
+      // location.assign('/');
     },
     error: function (err) {
       console.log(err);

@@ -1,12 +1,14 @@
 const express = require('express');
 
 // const userController = require('../controllers/userController');
-// const authController = require('../controllers/authController');
+const authController = require('../controllers/authController');
 const paymentController = require('../controllers/paymentController');
 
 const router = express.Router();
 
-router.route('/createOrder').get(paymentController.createOrder);
+router
+  .route('/createOrder')
+  .get(authController.isLoggedIn, paymentController.createOrder);
 router.route('/getOrder').post(paymentController.getOrder);
 router
   .route('/fetchPaymentOnOrder')

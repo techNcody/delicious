@@ -34,29 +34,46 @@ head
         h2
           | Admin Approval
           span  Portal (AAP)
+        table.table(style='margin-top: 5%;')
+          thead
+            tr
+              th(scope='col') Req. Id
+              th(scope='col') Meal type
+              th(scope='col') Email
+              th(scope='col') Message
+              th(scope='col') Created at
+          tbody
+            each request in requests
+              tr
+                td #{request._id}
+                td #{request.mealType}
+                th(scope='row') #{request.userCustomerEmail}
+                td #{request.message}
+                td #{new Date(request.createdAt).toDateString()}
+
       form.send-message-form(action='/api/v2/users/approveSubscription' method='post' role='form')
         .form-row
-          .col-md-4.form-group
+          .col-md-6.form-group
             select.custom-select(name='customer')
               option(selected='none') Select Customer
-              each customer in customers
-                option(value=`${customer.email}`) #{customer.email}
+              each request in requests
+                option(value=`${request.userCustomerEmail}`) #{request.userCustomerEmail}
                 //- option(value='non-veg') Non-veg
             .validate
-          .col-md-4.form-group
+          .col-md-6.form-group
             select.custom-select(name='vendor')
               option(selected='none') Select Vendor
               each vendor in vendors
                 option(value=`${vendor.email}`) #{vendor.email}
                 //- option(value='non-veg') Non-veg
             .validate
-          .col-md-4.form-group
-            select.custom-select(name='requestId')
-              option(selected='none') Select Request Id.
-              each request in requests
-                option(value=`${request._id}`) #{request._id}
-                //- option(value='non-veg') Non-veg
-            .validate
+          //- .col-md-4.form-group
+          //-   select.custom-select(name='requestId')
+          //-     option(selected='none') Select Request Id.
+          //-     each request in requests
+          //-       option(value=`${request._id}`) #{request._id}
+          //-       //- option(value='non-veg') Non-veg
+          //-   .validate
         .mb-3
           .loading Loading
           .error-message
