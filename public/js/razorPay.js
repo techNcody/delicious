@@ -2,9 +2,11 @@ const payBtn = document.getElementById('rzp-button');
 
 if (payBtn) {
   payBtn.onclick = async function (e) {
-    console.log('clicked');
+    // console.log('clicked');
     const result = await axios('/api/v2/payments/createOrder');
-    console.log(result.data.data);
+    // console.log(result.data.data);
+
+    const razorPay = {};
 
     const options = {
       key: 'rzp_test_8DuvnthMFg2vEm', // Enter the Key ID generated from the Dashboard
@@ -20,9 +22,46 @@ if (payBtn) {
         color: '#ffa012'
       },
       // This handler function will handle the success payment
-      handler: function (response) {
-        alert(`Your payment id is: ${response.razorpay_payment_id}`);
+      handler: async function (response) {
+        // console.log(response);
+        // const subscription = await axios('/api/v2/subscription/createSubscription');
+        await axios({
+          method: 'post',
+          url: '/api/v2/subscription/createSubscription',
+          data: {
+            orderId: response.razorpay_order_id,
+            paymentId: response.razorpay_payment_id,
+            requestId: result.data.request._id,
+            status: 'paid'
+          }
+          // headers: {'Authorization': 'Bearer ...'}
+        });
+        // alert(`Your payment id is: ${response.razorpay_payment_id}`);
         alert('Your payment is completed Successfully');
+        location.assign('/');
+
+        // razorPay.paymentId = response.razorpay_payment_id;
+        // razorPay.orderId = response.razorpay_order_id;
+        // razorPay.signature = response.razorpay_signature;
+
+        // for hashing the value with SHA256
+        // var hash = CryptoJS.HmacSHA256(
+        //   options.order_id + '|' + razorPay.paymentId,
+        //   options.key
+        // );
+        // var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
+        // document.write(hashInBase64);
+
+        // const generated_signature = hash;
+        // console.log(generated_signature);
+        // console.log(razorPay.signature);
+        // console.log(options.order_id);
+        // console.log(razorPay.paymentId);
+        // console.log(options.key);
+
+        // if (generated_signature == razorPay.signature) {
+        //   alert('Your payment is completed Successfully..');
+        // }
       }
     };
 

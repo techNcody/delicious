@@ -7,6 +7,7 @@ const app = express();
 const userRouter = require('./routes/userRouter');
 const viewRouter = require('./routes/viewRouter');
 const paymentRouter = require('./routes/paymentRouter');
+const subscriptionRouter = require('./routes/subscriptionRouter');
 
 app.use(cors());
 
@@ -51,5 +52,6 @@ app.use(function (req, res, next) {
 app.use('/', viewRouter);
 app.use('/api/v2/users', userRouter);
 app.use('/api/v2/payments', paymentRouter);
+app.use('/api/v2/subscription', subscriptionRouter);
 
 module.exports = app;

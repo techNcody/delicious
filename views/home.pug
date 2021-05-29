@@ -58,7 +58,7 @@ header#header.fixed-top.d-flex.align-items-center.header-transparent
         if (role !== 'admin')
           li
             a(href='#menu') Menu
-        if (userName && (role !== 'admin'))
+        if (userName && (role !== 'admin') && (requestStatus === 'approved'))
           li
             a(href='#subscription') Subscription
         if (role !== 'admin')
@@ -116,11 +116,11 @@ section#hero
               div
                 a.btn-margin-top.btn-menu.animate__animated.animate__fadeInUp.scrollto(href='#menu') Our Menu
                 if (role !== 'admin')
-                  if userName
+                  if (userName  && !request)
                     a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/subscription') Subscribe a meal
-                  else
+                  else if (!userName)
                     a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/login') Login to Subscribe
-                else 
+                else if (role === 'admin') 
                   a.btn-margin-top.btn-book.animate__animated.animate__fadeInUp.scrollto(href='/approveSubscription') Approve Subscription
       a.carousel-control-prev(href='#heroCarousel' role='button' data-slide='prev')
         span.carousel-control-prev-icon.icofont-simple-left(aria-hidden='true')
@@ -151,7 +151,7 @@ if (role !== 'admin')
                   |  since many families still follow traditional asymmetrical gender roles. The tiffins are then returned either in the afternoon or the next day by the same system.
   // End About Section
   // ======= My subscription Section =======
-  if (request && (role !== 'admin'))
+  if ((requestStatus === 'approved') && (role !== 'admin'))
     section#subscription.subscription
       .container
         .section-title
@@ -164,7 +164,11 @@ if (role !== 'admin')
               h3.card-title Lunch subscription
               p.card-text #{request.mealType}
               p.card-text Rs. #{amount}
-              a.btn.btn-primary#rzp-button(type='button') Pay now
+              if (subscriptionStatus !== 'paid')
+                a.btn.btn-primary#rzp-button(type='button') Pay now
+              else 
+                h4.card-title Congratulations!
+                h4.card-title Your payment is done.
         
   // End My subscription Section
   // ======= Menu Section =======
@@ -309,4 +313,8 @@ script(src='https://unpkg.com/axios/dist/axios.min.js')
 script(src='js/login.js')
 script(src='js/email.js')
 script(src='https://checkout.razorpay.com/v1/checkout.js')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/hmac-sha256.min.js')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.min.js')
 script(src='js/razorPay.js')
+

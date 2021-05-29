@@ -30,11 +30,12 @@ exports.createOrder = async (req, res, next) => {
   instance.orders
     .create({ amount, currency, receipt, notes })
     .then((response) => {
-      console.log(response);
+      // console.log(response);
       res.status(200).json({
         status: 'success',
         data: response,
-        user: req.user
+        user: req.user,
+        request
       });
     })
     .catch((error) => {

@@ -66,7 +66,7 @@ const sendMail = function (toAddress, subject, text) {
 
 exports.signUp = async (req, res, next) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
     let role, aadhaarNumber, companyName, GSTIN, mobileNumber, pincode;
     mobileNumber = parseInt(req.body.mobile);
     pincode = parseInt(req.body.pinCode);
@@ -321,7 +321,7 @@ exports.logout = catchAsync(async (req, res, next) => {
 });
 
 exports.sendMessage = (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
 
   const toAddress = 'contact.speksolutions@gmail.com';
   const subject = `New message from ${req.user.name.split(' ')[0]} (${

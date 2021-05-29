@@ -4,11 +4,15 @@
 // const Product = require('../models/productModel');
 const User = require('../models/userModel');
 const Request = require('../models/requestModel');
+const Subscription = require('../models/subscriptionModel');
 
 exports.getHomePage = async (req, res, next) => {
   let userName = null;
   let role = null;
   let request = null;
+  let requestStatus = null;
+  let subscription = null;
+  let subscriptionStatus = null;
   let amount = 0;
   if (req.user) {
     role = req.user.role;
@@ -16,6 +20,16 @@ exports.getHomePage = async (req, res, next) => {
     request = await Request.findOne({
       userCustomerEmail: req.user.email
     });
+    // console.log(request);
+    if (request) {
+      requestStatus = request.status;
+      subscription = await Subscription.findOne({
+        requestId: request._id
+      });
+    }
+    if (subscription) {
+      subscriptionStatus = subscription.status;
+    }
     // console.log(request);
   }
 
@@ -32,7 +46,9 @@ exports.getHomePage = async (req, res, next) => {
     userName,
     role,
     request,
-    amount
+    amount,
+    subscriptionStatus,
+    requestStatus
   });
 };
 

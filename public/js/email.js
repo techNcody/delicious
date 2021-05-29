@@ -9,7 +9,7 @@ $('.send-message-form').submit(function (e) {
     url: url,
     data: form.serialize(), // serializes form input
     success: function (data) {
-      console.log(data);
+      // console.log(data);
       $('.send-message-form').find('.loading').slideUp();
       $('.send-message-form').find('.sent-message').slideDown();
       window.setTimeout(function () {
