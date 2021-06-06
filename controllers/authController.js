@@ -9,6 +9,7 @@ const Email = require('email-templates');
 
 const User = require('../models/userModel');
 const Request = require('../models/requestModel');
+const Subscription = require('../models/subscriptionModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
@@ -174,6 +175,32 @@ exports.login = catchAsync(async (req, res, next) => {
         }
       });
     }
+
+    let request = null;
+    let subscription = null;
+
+    if (user.role === 'vendor') {
+      request = await Request.findOne({
+        $and: [{ userVendorEmail: user.email }, { status: 'approved' }]
+      });
+    } else if (user.role === 'customer') {
+      request = await Request.findOne({
+        $and: [{ userCustomerEmail: user.email }, { status: 'approved' }]
+      });
+    }
+
+    if (request) {
+      subscription = await Subscription.findOne({
+        $and: [{ requestId: request._id }, { toDate: { $lt: Date.now() } }]
+      });
+    }
+
+    if (subscription) {
+      await Request.findByIdAndUpdate(request._id, { status: 'expired' });
+    }
+    // console.log(user);
+    // console.log(request);
+    // console.log(subscription);
 
     // console.log(user);
     if (user.email === userState) {

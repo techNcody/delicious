@@ -35,11 +35,18 @@ const login = async (otp, userState) => {
         userState
       }
     });
-
+    console.log(result);
     if (result.data.data.status === 'success') {
-      window.setTimeout(() => {
-        location.assign('/');
-      }, 3000);
+      console.log(result.data.data);
+      if (result.data.data.data.user.role === 'vendor') {
+        window.setTimeout(() => {
+          location.assign('/vendor');
+        }, 3000);
+      } else {
+        window.setTimeout(() => {
+          location.assign('/');
+        }, 3000);
+      }
     } else {
       document.getElementById('login-loader').classList.add('dl-hide-el');
       verifyOtp.disabled = false;

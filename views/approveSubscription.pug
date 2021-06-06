@@ -80,7 +80,10 @@ head
           .sent-message
             | Subscription is approved successfully. Thank you!
         .text-center
-          button.btn.btn-warning(type='submit') Approve
+          button.btn.btn-warning(type='submit' style="margin: 20px") Approve
+
+      button.btn.btn-warning(onclick='location.href="/"' style="margin: 10px") Go to Home page
+      button.btn.btn-warning(onclick='location.reload()' style="margin: 10px") Refresh
           //- button.btn.btn-primary#rzp-button(type='button') Pay
 
     // Vendor JS Files

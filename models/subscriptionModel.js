@@ -20,6 +20,14 @@ const subscriptionSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now()
+  },
+  fromDate: {
+    type: Date,
+    default: Date.now()
+  },
+  toDate: {
+    type: Date,
+    default: Date.now()
   }
 });
 

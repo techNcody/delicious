@@ -25,6 +25,8 @@ if (payBtn) {
       handler: async function (response) {
         // console.log(response);
         // const subscription = await axios('/api/v2/subscription/createSubscription');
+        const fromDate = Date.now() + 3;
+        const toDate = fromDate + 30;
         await axios({
           method: 'post',
           url: '/api/v2/subscription/createSubscription',
@@ -33,6 +35,8 @@ if (payBtn) {
             paymentId: response.razorpay_payment_id,
             requestId: result.data.request._id,
             status: 'paid'
+            // fromDate,
+            // toDate
           }
           // headers: {'Authorization': 'Bearer ...'}
         });
